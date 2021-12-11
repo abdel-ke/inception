@@ -1,1 +1,39 @@
-do
+version: "3.9"
+services:
+  nginx:
+    build: ./requirements/nginx/
+    image: nginx
+    ports:
+      - "443:443"
+
+  mariadb:
+    build: ./requirements/mariadb/
+    image: mariadb
+    ports:
+      - "3306:3306"
+    volumes:
+      - db:/var/lib/mysql
+
+  wordpress:
+    build: ./requirements/wordpress/
+    image: wordpress
+    ports:
+      - "9000:9000"
+    volumes:
+      - wp:/www/wordpress
+    depends_on:
+      - mariadb
+    
+volumes:
+  db:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/abdel-ke/data/DB
+      o: bind
+  wp:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/abdel-ke/data/WordPress
+      o: bind
