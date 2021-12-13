@@ -2,8 +2,10 @@
 
 if [ ! -f "/var/lib/mysql/ib_buffer_pool" ];
 then
-	/etc/init.d/mariadb setup
-	rc-service mariadb start
+	# /etc/init.d/mariadb setup
+	# rc-service mariadb start
+	service mariadb setup
+	service mariadb start
 
 	echo "CREATE USER 'abdel-ke'@'localhost' IDENTIFIED BY '1337@sh';" | mysql -u root
 	echo "CREATE DATABASE wordpress;" | mysql -u root
