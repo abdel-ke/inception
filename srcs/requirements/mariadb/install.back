@@ -17,6 +17,10 @@ QUIT (from mariadb)
 mysql -u abdel-ke -p'1337@sh'	=>	login to abdel-ke
 SHOW DATABASES;
 
+ABDELHAMID EL KEMMAL
+
+
+
 //
 echo "CREATE USER 'abdel-ke'@'localhost' IDENTIFIED BY '1337@sh';" | mysql -u root
 echo "CREATE DATABASE wordpress;" | mysql -u root
