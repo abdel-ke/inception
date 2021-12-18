@@ -8,21 +8,22 @@ then
 	# service mariadb setup
 	# service mariadb start
 
-	echo "CREATE USER '${MYSQL_USER}'@'${DOMAIN_NAME}' IDENTIFIED BY '${MYSQL_PASSWORD}';" | mysql -u root
-	echo "CREATE DATABASE wordpress;" | mysql -u root
-	echo "GRANT ALL PRIVILEGES ON *.* TO 'abdel-ke'@'localhost' IDENTIFIED BY '1337@sh';" | mysql -u root
-	# echo "FLUSH PRIVILEGES;" | mysql -u root
+	echo "CREATE USER '${DATABASE_USER}'@'localhost' IDENTIFIED BY '${DATABASE_USER_PASS}';" | mysql -u ${MYSQL_ROOT}
+	echo "CREATE DATABASE ${DATABASE_NAME};" | mysql -u ${MYSQL_ROOT}
+	echo "GRANT ALL PRIVILEGES ON *.* TO '${DATABASE_USER}'@'localhost' IDENTIFIED BY '${DATABASE_USER_PASS}';" | mysql -u ${MYSQL_ROOT}
+	echo "FLUSH PRIVILEGES;" | mysql -u ${MYSQL_ROOT}
 
-	echo "CREATE USER '${MYSQL_USER}'@'${DOMAIN_NAME}' IDENTIFIED BY '${MYSQL_PASSWORD}';" | mysql -u root
-	echo "GRANT ALL PRIVILEGES ON wordpress.* TO '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';" | mysql -u root
-	# echo "FLUSH PRIVILEGES;" | mysql -u root
+	echo "CREATE USER '${DATABASE_USER}'@'%' IDENTIFIED BY '${DATABASE_USER_PASS}';" | mysql -u ${MYSQL_ROOT}
+	echo "GRANT ALL PRIVILEGES ON ${DATABASE_NAME}.* TO '${DATABASE_USER}'@'%' IDENTIFIED BY '${DATABASE_USER_PASS}';" | mysql -u ${MYSQL_ROOT}
+	echo "FLUSH PRIVILEGES;" | mysql -u ${MYSQL_ROOT}
 
-	# echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}'" | mysql -u root
-	# echo "FLUSH PRIVILEGES;" | mysql -u root
-	# mysql -u root -d wordpress -p'${MYSQL_ROOT_PASSWORD}' < /wp.sql
-	# mysql --user="root" --database="wordpress" --password="${MYSQL_ROOT_PASSWORD}" < /wp.sql
+	echo "ALTER USER '${DATABASE_USER}'@'localhost' IDENTIFIED BY '${DATABASE_USER_PASS}'" | mysql -u ${MYSQL_ROOT}
+	echo "ALTER USER '${MYSQL_ROOT}'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}'" | mysql -u ${MYSQL_ROOT}
+	# mysql -u ${MYSQL_ROOT} -d ${DATABASE_NAME} -p'${MYSQL_ROOT_PASSWORD}' < /wp.sql
+	# mysql --user="${MYSQL_ROOT}" --database="${DATABASE_NAME}" --password="${MYSQL_ROOT_PASSWORD}" < /wp.sql
+	sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
 fi
-sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
-rc-service mariadb restart
+rc-service mariadb start
 rc-service mariadb stop
 /usr/bin/mariadbd --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib/mariadb/plugin --user=mysql --pid-file=/run/mysqld/mariadb.pid
+# cd '/usr' ; /usr/bin/mysqld_safe --datadir='/var/lib/mysql'
