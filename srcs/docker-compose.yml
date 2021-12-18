@@ -41,6 +41,14 @@ services:
     env_file:
       - .env
 
+  adminer:
+    build: ./requirements/adminer/
+    image: adminer
+    container_name: adminer
+    ports:
+      - "6060:6060"
+    networks:
+      - backend
 volumes:
   db:
     driver: local

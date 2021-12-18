@@ -8,19 +8,18 @@ then
 	# service mariadb setup
 	# service mariadb start
 
-	echo "CREATE USER '${DATABASE_USER}'@'localhost' IDENTIFIED BY '${DATABASE_USER_PASS}';" | mysql -u ${MYSQL_ROOT}
+	echo "CREATE USER '${DATABASE_USER}'@'localhost' IDENTIFIED BY '${DB_USER_PASS}';" | mysql -u ${MYSQL_ROOT}
 	echo "CREATE DATABASE ${DATABASE_NAME};" | mysql -u ${MYSQL_ROOT}
-	echo "GRANT ALL PRIVILEGES ON *.* TO '${DATABASE_USER}'@'localhost' IDENTIFIED BY '${DATABASE_USER_PASS}';" | mysql -u ${MYSQL_ROOT}
+	echo "GRANT ALL PRIVILEGES ON *.* TO '${DATABASE_USER}'@'localhost' IDENTIFIED BY '${DB_USER_PASS}';" | mysql -u ${MYSQL_ROOT}
 	echo "FLUSH PRIVILEGES;" | mysql -u ${MYSQL_ROOT}
 
-	echo "CREATE USER '${DATABASE_USER}'@'%' IDENTIFIED BY '${DATABASE_USER_PASS}';" | mysql -u ${MYSQL_ROOT}
-	echo "GRANT ALL PRIVILEGES ON ${DATABASE_NAME}.* TO '${DATABASE_USER}'@'%' IDENTIFIED BY '${DATABASE_USER_PASS}';" | mysql -u ${MYSQL_ROOT}
+	echo "CREATE USER '${DATABASE_USER}'@'%' IDENTIFIED BY '${DB_USER_PASS}';" | mysql -u ${MYSQL_ROOT}
+	echo "GRANT ALL PRIVILEGES ON ${DATABASE_NAME}.* TO '${DATABASE_USER}'@'%' IDENTIFIED BY '${DB_USER_PASS}';" | mysql -u ${MYSQL_ROOT}
 	echo "FLUSH PRIVILEGES;" | mysql -u ${MYSQL_ROOT}
 
-	echo "ALTER USER '${DATABASE_USER}'@'localhost' IDENTIFIED BY '${DATABASE_USER_PASS}'" | mysql -u ${MYSQL_ROOT}
+	echo "ALTER USER '${DATABASE_USER}'@'localhost' IDENTIFIED BY '${DB_USER_PASS}'" | mysql -u ${MYSQL_ROOT}
 	echo "ALTER USER '${MYSQL_ROOT}'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}'" | mysql -u ${MYSQL_ROOT}
 	# mysql -u ${MYSQL_ROOT} -d ${DATABASE_NAME} -p'${MYSQL_ROOT_PASSWORD}' < /wp.sql
-	# mysql --user="${MYSQL_ROOT}" --database="${DATABASE_NAME}" --password="${MYSQL_ROOT_PASSWORD}" < /wp.sql
 	sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
 fi
 rc-service mariadb start
