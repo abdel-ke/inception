@@ -19,7 +19,7 @@ then
 
 	echo "ALTER USER '${DATABASE_USER}'@'localhost' IDENTIFIED BY '${DB_USER_PASS}'" | mysql -u ${MYSQL_ROOT}
 	echo "ALTER USER '${MYSQL_ROOT}'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}'" | mysql -u ${MYSQL_ROOT}
-	# mysql -u ${MYSQL_ROOT} -d ${DATABASE_NAME} -p'${MYSQL_ROOT_PASSWORD}' < /wp.sql
+	mysql -u ${MYSQL_ROOT} -d ${DATABASE_NAME} -p'${MYSQL_ROOT_PASSWORD}' < /wordpress.sql
 	sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
 fi
 rc-service mariadb start

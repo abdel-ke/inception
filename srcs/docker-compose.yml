@@ -46,9 +46,10 @@ services:
     image: adminer
     container_name: adminer
     ports:
-      - "6060:6060"
+      - "5000:5000"
     networks:
       - backend
+
 volumes:
   db:
     driver: local
