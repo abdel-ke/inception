@@ -50,6 +50,18 @@ services:
     networks:
       - backend
 
+  backup:
+    build: ./requirements/backup/
+    image: backup
+    container_name: backup
+    networks:
+      - backend
+    depends_on:
+      - mariadb
+    volumes:
+      - db:/data/DB
+      - backup:/backup
+
 volumes:
   db:
     driver: local
@@ -62,6 +74,12 @@ volumes:
     driver_opts:
       type: none
       device: /home/abdel-ke/data/WordPress
+      o: bind
+  backup:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/abdel-ke/backup
       o: bind
 
 networks:
