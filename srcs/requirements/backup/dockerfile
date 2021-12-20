@@ -1,0 +1,9 @@
+FROM alpine:3.14.2
+
+RUN apk update
+RUN mkdir /backup
+
+COPY ./tools/script.sh /usr/bin/
+RUN chmod +x /usr/bin/script.sh
+
+CMD /usr/bin/script.sh
