@@ -10,6 +10,7 @@ services:
       - backend
     volumes:
       - wp:/www/wordpress
+    command: nginx -g "daemon off;"
     depends_on:
       - wordpress
 
@@ -23,6 +24,7 @@ services:
       - backend
     volumes:
       - db:/var/lib/mysql
+    command: ./script.sh
     env_file:
       - .env
 
@@ -36,6 +38,7 @@ services:
       - backend
     volumes:
       - wp:/www/wordpress
+    # command: ./script.sh
     depends_on:
       - mariadb
     env_file:
@@ -47,6 +50,7 @@ services:
     container_name: adminer
     ports:
       - "5000:5000"
+    command: php -S 0.0.0.0:5000
     networks:
       - backend
 
@@ -58,6 +62,7 @@ services:
       - backend
     depends_on:
       - mariadb
+    command: /usr/bin/script.sh
     volumes:
       - db:/data/DB
       - backup:/backup
@@ -67,21 +72,21 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/abdel-ke/data/DB
+      device: ~/data/DB
       o: bind
   wp:
     driver: local
     driver_opts:
       type: none
-      device: /home/abdel-ke/data/WordPress
+      device: ~/data/WordPress
       o: bind
   backup:
     driver: local
     driver_opts:
       type: none
-      device: /home/abdel-ke/backup
+      device: ~/data/backup
       o: bind
 
 networks:
   backend:
-    driver: bridge
+    # driver: bridge

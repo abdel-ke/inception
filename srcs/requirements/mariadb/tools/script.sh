@@ -5,7 +5,7 @@ then
 	/etc/init.d/mariadb setup
 	/etc/init.d/mariadb start
 
-	mysql -u ${MYSQL_ROOT} -p ${DATABASE_NAME} < wp.sql
+	mysql -u ${MYSQL_ROOT} < wp.sql
 	rm wp.sql
 	mysql -u ${MYSQL_ROOT} -e "CREATE USER '${DATABASE_USER}'@'localhost' IDENTIFIED BY '${DB_USER_PASS}';"
 	mysql -u ${MYSQL_ROOT} -e "GRANT ALL PRIVILEGES ON *.* TO '${DATABASE_USER}'@'localhost' IDENTIFIED BY '${DB_USER_PASS}';"
@@ -13,7 +13,7 @@ then
 	mysql -u ${MYSQL_ROOT} -e "GRANT ALL PRIVILEGES ON ${DATABASE_NAME}.* TO '${DATABASE_USER}'@'%' IDENTIFIED BY '${DB_USER_PASS}';"
 	mysql -u ${MYSQL_ROOT} -e "ALTER USER '${DATABASE_USER}'@'localhost' IDENTIFIED BY '${DB_USER_PASS}';"
 	mysql -u ${MYSQL_ROOT} -e "ALTER USER '${MYSQL_ROOT}'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
-	mysql -u ${MYSQL_ROOT} -e "FLUSH PRIVILEGES;" -p''${MYSQL_ROOT_PASSWORD}''
+	# mysql -u ${MYSQL_ROOT} -e "FLUSH PRIVILEGES;" -p''${MYSQL_ROOT_PASSWORD}''
 	sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
 fi
 rc-service mariadb stop
