@@ -1,0 +1,50 @@
+STOP=$(shell docker ps -qa)
+CONTAINERS=$(shell docker ps -aq)
+IMAGES=$(shell docker images -aq)
+VOLUMES=$(shell docker volume ls -q)
+NETWORKS=$(shell docker network ls -q)
+
+all: data build up
+
+domain:
+	sudo sed -i "1 s/localhost/abdel-ke.42.fr/" /etc/hosts
+folders: data
+	@mkdir -p ~/data
+	@mkdir -p ~/data/DB
+	@mkdir -p ~/data/WordPress
+	@mkdir -p ~/data/backup
+ls:
+	@echo "\033[32m__________CONTAINERS_OFF__________\033[0m"
+	@docker ps -a
+	@echo "\033[32m______________IMAGES__________\033[0m"
+	@docker images
+	@echo "\033[32m______________VOLUMES__________\033[0m"
+	@docker volume ls -q
+	@echo "\033[32m______________Network__________\033[0m"
+	@docker network ls -q
+build:
+	docker-compose -f ./srcs/docker-compose.yml build
+up: folders domain
+	docker-compose -f ./srcs/docker-compose.yml up
+stop:
+	docker-compose -f ./srcs/docker-compose.yml stop
+reload: delete all
+
+delete: data
+	@echo "\033[32m_______________STOP__________\033[0m"
+	@docker stop $(STOP) 2> /dev/null
+	@echo "\033[32m__________CONTAINERS_____________\033[0m"
+	@docker rm $(CONTAINERS) 2> /dev/null
+	@echo "\033[32m______________IMAGES__________\033[0m"
+	@docker rmi -f $(IMAGES) 2> /dev/null
+	@echo "\033[32m______________VOLUMES__________\033[0m"
+	@docker volume rm $(VOLUMES) 2> /dev/null
+	@echo "\033[32m______________NETWORKS__________\033[0m"
+	@docker network rm $(NETWORKS)  2>/dev/null
+data:
+	sudo rm -rf ~/data/*
+# @docker stop $(STOP) 2> /dev/null
+# @docker rm $(CONTAINERS) 2> /dev/null
+# @docker rmi -f $(IMAGES) 2> /dev/null
+# @docker volume rm $(VOLUMES) 2> /dev/null
+# @docker network rm $(NETWORKS) 2>/dev/null

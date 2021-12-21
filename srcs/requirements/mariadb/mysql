@@ -1,8 +1,0 @@
-show all users	=>
-	use mysql;
-	SELECT user FROM user;
-If we want to see more information on the user table	=>
-	DESC name_of_DB
-select current user
-	select user();	or 	select current_user();
-

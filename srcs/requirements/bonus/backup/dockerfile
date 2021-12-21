@@ -6,4 +6,4 @@ RUN mkdir /backup
 COPY ./tools/script.sh /usr/bin/
 RUN chmod +x /usr/bin/script.sh
 
-# CMD /usr/bin/script.sh
+CMD /usr/bin/script.sh

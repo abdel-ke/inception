@@ -1,33 +1,30 @@
-all: build up
+all: Dir Build Run
 
-domain:
-	sudo sed -i "1 s/DOMAIN_NAME/abdel-ke.42.fr/" /etc/hosts
-folders:
-	@mkdir -p ~/data
-	@mkdir -p ~/data/DB
-	@mkdir -p ~/data/WordPress
-	@mkdir -p ~/data/backup
-ls:
-	@echo "\033[32m____________IMAGES__________\033[0m"
-	@docker images
-	@echo "\033[32m__________CONTAINERS_OFF__________\033[0m"
+Dir: 
+	mkdir -p /home/sqatim/data/wordpress /home/sqatim/data/mariadb
+Build:
+	@docker-compose -f ./srcs/docker-compose.yml build
+Run:
+	@docker-compose -f ./srcs/docker-compose.yml up
+clean:
+	@docker-compose -f ./srcs/docker-compose.yml down
 
-	@docker ps -a
-	
-up: folders domain
-	docker-compose -f ./srcs/docker-compose.yml up
+fclean: clean
+	docker system prune -a --force
 
-stop:
-	docker-compose -f ./srcs/docker-compose.yml stop
+re: fclean all
 
-reload: data folders
-	docker-compose -f ./srcs/docker-compose.yml down
-	docker-compose -f ./srcs/docker-compose.yml up --build
+include srcs/.env
 
-build: folders
-	docker-compose -f ./srcs/docker-compose.yml build
+build:
+	sudo mkdir -p /home/abdel-ke/data
+	sudo mkdir -p /home/abdel-ke/data/DB
+	sudo mkdir -p /home/abdel-ke/data/backup
+	sudo chown -R root:root /home/abdel-ke/data
+	sudo sh -c "echo 127.0.0.1 ${DOMAIN_NAME} >> /etc/hosts"
+	cd srcs && sudo docker-compose build
+up:
+	cd srcs && sudo docker-compose up
+down:
+	cd srcs && sudo docker-compose down
 
-data:
-	sudo rm -rf ~/data/DB
-	sudo rm -rf ~/data/WordPress
-	sudo rm -rf ~/data/backup

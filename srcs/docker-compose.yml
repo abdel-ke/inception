@@ -13,6 +13,8 @@ services:
     command: nginx -g "daemon off;"
     depends_on:
       - wordpress
+    env_file:
+      - .env
 
   mariadb:
     build: ./requirements/mariadb/
@@ -24,7 +26,6 @@ services:
       - backend
     volumes:
       - db:/var/lib/mysql
-    command: ./script.sh
     env_file:
       - .env
 
@@ -38,14 +39,13 @@ services:
       - backend
     volumes:
       - wp:/www/wordpress
-    # command: ./script.sh
     depends_on:
       - mariadb
     env_file:
       - .env
 
   adminer:
-    build: ./requirements/adminer/
+    build: ./requirements/bonus/adminer/
     image: adminer
     container_name: adminer
     ports:
@@ -55,14 +55,13 @@ services:
       - backend
 
   backup:
-    build: ./requirements/backup/
+    build: ./requirements/bonus/backup/
     image: backup
     container_name: backup
     networks:
       - backend
     depends_on:
       - mariadb
-    command: /usr/bin/script.sh
     volumes:
       - db:/data/DB
       - backup:/backup
@@ -89,4 +88,3 @@ volumes:
 
 networks:
   backend:
-    # driver: bridge
