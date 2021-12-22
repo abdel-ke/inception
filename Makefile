@@ -1,11 +1,15 @@
+locationWinHost=/mnt/c/Windows/System32/drivers/etc/hosts
 all: down data build up
 
 domain:
-	sudo sed -i "1 s/localhost/abdel-ke.42.fr/" /etc/hosts
+# for linux
+	sudo sed -i '/127.0.0.1/s/localhost/abdel-ke.42.fr/' /etc/hosts
+# for windows
+# sed -i "s/#   127.0.0.1       localhost/127.0.0.1       localhost abdel-ke.42.fr/" $(localhost)
 folders: data
-	@mkdir -p ~/data/DB
-	@mkdir -p ~/data/WordPress
-	@mkdir -p ~/data/backup
+	@sudo mkdir -p /mnt/c/Users/kemma/Desktop/data/DB
+	@sudo mkdir -p /mnt/c/Users/kemma/Desktop/data/WordPress
+	@sudo mkdir -p /mnt/c/Users/kemma/Desktop/data/backup
 ls:
 	@echo "\033[32m__________CONTAINERS_OFF__________\033[0m"
 	@docker ps -a
@@ -33,7 +37,7 @@ logs:
 reload: rm all
 
 data:
-	sudo rm -rf ~/data/*
+	sudo rm -rf /mnt/c/Users/kemma/Desktop/data/*
 
 rm:
 	docker system prune -a --force

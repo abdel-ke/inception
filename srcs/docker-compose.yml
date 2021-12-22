@@ -70,18 +70,21 @@ volumes:
     driver_opts:
       type: none
       device: ~/data/DB
+      # device: /mnt/c/Users/kemma/Desktop/data/DB
       o: bind
   wp:
     driver: local
     driver_opts:
       type: none
       device: ~/data/WordPress
+      # device: /mnt/c/Users/kemma/Desktop/data/WordPress
       o: bind
   backup:
     driver: local
     driver_opts:
       type: none
       device: ~/data/backup
+      # device: /mnt/c/Users/kemma/Desktop/data/backup
       o: bind
 
 networks:
