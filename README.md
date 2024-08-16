@@ -4,7 +4,6 @@ This project consists in having you set up a small infrastructure composed of di
 services under specific rules. The whole project has to be done in a virtual machine. You
 have to use docker-compose.
 
-<img width="1138" alt="Screen Shot 2021-12-22 at 8 41 27 PM" src="https://user-images.githubusercontent.com/54292953/147146640-ae6e8f26-3332-474a-bc43-be556dd61c66.png">
 
 
 # <img src="https://www.docker.com/sites/default/files/d8/2019-07/vertical-logo-monochromatic.png"  width="40px"> Inception
